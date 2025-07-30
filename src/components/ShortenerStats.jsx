@@ -1,34 +1,61 @@
-import React from "react";
-import { Box, Typography, Card, CardContent } from "@mui/material";
+// src/components/ShortenerStats.jsx
+
+import React from 'react';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  Box,
+  Chip,
+} from '@mui/material';
+
+const dummyStats = [
+  {
+    id: '1',
+    shortUrl: 'https://sho.rt/abc123',
+    originalUrl: 'https://example.com/very-long-url-1',
+    clicks: 34,
+  },
+  {
+    id: '2',
+    shortUrl: 'https://sho.rt/xyz789',
+    originalUrl: 'https://example.com/another-very-long-url',
+    clicks: 87,
+  },
+];
 
 const ShortenerStats = () => {
-  const keys = Object.keys(localStorage);
-  const items = keys.map(key => {
-    try {
-      return { shortcode: key, ...JSON.parse(localStorage.getItem(key)) };
-    } catch {
-      return null;
-    }
-  }).filter(Boolean);
-
   return (
-    <Box p={3}>
-      <Typography variant="h4" gutterBottom>Shortened URL Statistics</Typography>
-      {items.map((item, index) => (
-        <Card key={index} sx={{ mb: 2 }}>
-          <CardContent>
-            <Typography>Shortcode: {item.shortcode}</Typography>
-            <Typography>URL: {item.longUrl}</Typography>
-            <Typography>Expiry: {new Date(item.expiry).toLocaleString()}</Typography>
-            <Typography>Clicks: {item.clicks.length}</Typography>
-            {item.clicks.map((click, i) => (
-              <Typography key={i} sx={{ pl: 2 }}>
-                Time: {click.time}, Source: {click.source}, Location: {click.location}
-              </Typography>
-            ))}
-          </CardContent>
-        </Card>
-      ))}
+    <Box sx={{ padding: 3 }}>
+      <Typography variant="h5" gutterBottom>
+        🔍 Shortened URLs Stats
+      </Typography>
+
+      <Grid container spacing={2}>
+        {dummyStats.map((item) => (
+          <Grid item xs={12} sm={6} md={4} key={item.id}>
+            <Card variant="outlined" sx={{ height: '100%' }}>
+              <CardContent>
+                <Typography variant="h6" color="primary">
+                  {item.shortUrl}
+                </Typography>
+                <Typography variant="body2" gutterBottom>
+                  Original: <br />
+                  <a href={item.originalUrl} target="_blank" rel="noopener noreferrer">
+                    {item.originalUrl}
+                  </a>
+                </Typography>
+                <Chip
+                  label={`Clicks: ${item.clicks}`}
+                  color="secondary"
+                  sx={{ marginTop: 1 }}
+                />
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     </Box>
   );
 };
